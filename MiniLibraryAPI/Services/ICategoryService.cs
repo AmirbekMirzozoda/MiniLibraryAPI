@@ -4,5 +4,6 @@ namespace MiniLibraryAPI.Services;
 
 public interface ICategoryService
 {
-    Task<Category> AddCategory(Category category);
+    Task<Category> AddCategoryAsync(Category category);
+    Task<IEnumerable<Category>> GetCategoriesAsync();
 }

@@ -9,9 +9,16 @@ namespace MiniLibraryAPI.Controllers;
 public class CategoryController(ICategoryService service) : ControllerBase
 {
     [HttpPost]
-    public async Task<ActionResult<Category>> AddCategory([FromBody] Category category)
+    public async Task<ActionResult<Category>> AddCategoryAsync([FromBody] Category category)
     {
-        var createdCategory = await service.AddCategory(category);
+        var createdCategory = await service.AddCategoryAsync(category);
         return Ok(createdCategory);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Category>>> GetCategoriesAsync()
+    {
+        var categories = await service.GetCategoriesAsync();
+        return Ok(categories);
     }
 }
