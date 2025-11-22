@@ -10,4 +10,6 @@ public class Book : BaseEntity
     
     public long CategoryId { get; set; }
     public Category? Category { get; set; }
+    
+    public DateTime? PublishedDate { get; set; }
 }

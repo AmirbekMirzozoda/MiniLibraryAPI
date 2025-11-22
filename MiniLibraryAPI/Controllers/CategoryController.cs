@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using MiniLibraryAPI.DTOs.Filters;
 using MiniLibraryAPI.Entities;
 using MiniLibraryAPI.Services;
 
@@ -16,9 +17,23 @@ public class CategoryController(ICategoryService service) : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Category>>> GetCategoriesAsync()
+    public async Task<ActionResult<IEnumerable<Category>>> GetCategoriesAsync([FromQuery] CategoryFilter filter)
     {
-        var categories = await service.GetCategoriesAsync();
+        var categories = await service.GetCategoriesAsync(filter);
         return Ok(categories);
+    }
+    
+    [HttpPut]
+    public async Task<ActionResult<Category>> UpdateCategoryAsync(Category category)
+    {
+        var updatedCategory = await service.UpdateCategoryAsync(category);
+        return Ok(updatedCategory);
+    }
+    
+    [HttpDelete]
+    public async Task<ActionResult> DeleteCategoryAsync(long id)
+    {
+        await service.DeleteCategoryAsync(id);
+        return Ok();
     }
 }
