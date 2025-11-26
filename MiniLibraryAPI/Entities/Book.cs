@@ -1,3 +1,6 @@
+using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
+
 namespace MiniLibraryAPI.Entities;
 
 public class Book : BaseEntity
