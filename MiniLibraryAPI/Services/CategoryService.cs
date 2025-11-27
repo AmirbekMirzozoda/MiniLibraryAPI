@@ -20,21 +20,29 @@ public class CategoryService(ApplicationDbContext context) : ICategoryService
             .Include(x => x.Books!)
             .ThenInclude(x => x.Author)
             .AsQueryable();
-        
-        if (filter.Id.HasValue)
-        {
-            query = query.Where(x => x.Id == filter.Id.Value);
-        }
-        if (!string.IsNullOrEmpty(filter.Name))
-        {
-            query = query.Where(x => x.Name.Contains(filter.Name));
-        }
+
+        if (filter.Id.HasValue) query = query.Where(x => x.Id == filter.Id.Value);
+        if (!string.IsNullOrEmpty(filter.Name)) query = query.Where(x => x.Name.Contains(filter.Name));
         if (!string.IsNullOrEmpty(filter.Description))
-        {
             query = query.Where(x => x.Description != null && x.Description.Contains(filter.Description));
-        }
-            
+
         return await query.ToListAsync();
+    }
+
+    public async Task<Category?> GetByIdWithLinqQueryAsync(long id)
+    {
+        var query =
+            from category in context.Categories
+            where category.Id == id
+            select category;
+
+        return await query.SingleOrDefaultAsync();
+    }
+
+    public async Task<Category?> GetByIdAsync(long id)
+    {
+        return await context.Categories
+            .SingleOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<Category> UpdateCategoryAsync(Category category)
