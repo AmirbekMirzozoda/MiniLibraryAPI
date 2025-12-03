@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using MiniLibraryAPI.DTOs;
 using MiniLibraryAPI.DTOs.Filters;
 using MiniLibraryAPI.Entities;
 using MiniLibraryAPI.Services;
@@ -10,9 +11,9 @@ namespace MiniLibraryAPI.Controllers;
 public class CategoryController(ICategoryService service) : ControllerBase
 {
     [HttpPost]
-    public async Task<ActionResult<Category>> AddCategoryAsync([FromBody] Category category)
+    public async Task<ActionResult<Category>> AddCategoryAsync([FromBody] AddCategoryDto categoryDto)
     {
-        var createdCategory = await service.AddCategoryAsync(category);
+        var createdCategory = await service.AddCategoryAsync(categoryDto);
         return Ok(createdCategory);
     }
 
@@ -24,7 +25,7 @@ public class CategoryController(ICategoryService service) : ControllerBase
     }
     
     [HttpPut]
-    public async Task<ActionResult<Category>> UpdateCategoryAsync(Category category)
+    public async Task<ActionResult<Category>> UpdateCategoryAsync(CategoryDto category)
     {
         var updatedCategory = await service.UpdateCategoryAsync(category);
         return Ok(updatedCategory);

@@ -1,14 +1,17 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using MiniLibraryAPI.Data;
+using MiniLibraryAPI.DTOs;
 using MiniLibraryAPI.DTOs.Filters;
 using MiniLibraryAPI.Entities;
 
 namespace MiniLibraryAPI.Services;
 
-public class CategoryService(ApplicationDbContext context) : ICategoryService
+public class CategoryService(ApplicationDbContext context, IMapper mapper) : ICategoryService
 {
-    public async Task<Category> AddCategoryAsync(Category category)
+    public async Task<Category> AddCategoryAsync(AddCategoryDto categoryDto)
     {
+        var category = mapper.Map<Category>(categoryDto);
         context.Categories.Add(category);
         await context.SaveChangesAsync();
         return category;
@@ -45,11 +48,19 @@ public class CategoryService(ApplicationDbContext context) : ICategoryService
             .SingleOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<Category> UpdateCategoryAsync(Category category)
+    public async Task<Category> UpdateCategoryAsync(CategoryDto category)
     {
-        context.Categories.Update(category);
+        var existingCategory = await GetByIdAsync(category.Id);
+        if (existingCategory == null)
+        {
+            throw new KeyNotFoundException($"Category with Id {category.Id} not found.");
+        }
+        existingCategory.Name = category.Name;
+        existingCategory.Description = category.Description;
+        
+        context.Categories.Update(existingCategory);
         await context.SaveChangesAsync();
-        return category;
+        return existingCategory;
     }
 
     public async Task DeleteCategoryAsync(long id)

@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
+using MiniLibraryAPI.AutoMapper;
 using MiniLibraryAPI.Data;
 using MiniLibraryAPI.Services;
 
@@ -17,6 +18,7 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     });
 
+builder.Services.AddAutoMapper(typeof(MapperProfile));
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 
