@@ -18,7 +18,7 @@ public class CategoryController(ICategoryService service) : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Category>>> GetCategoriesAsync([FromQuery] CategoryFilter filter)
+    public async Task<ActionResult<Response<ResponseGetList<IEnumerable<Category>>>>> GetCategoriesAsync([FromQuery] CategoryFilter filter)
     {
         var categories = await service.GetCategoriesAsync(filter);
         return Ok(categories);

@@ -1,3 +1,4 @@
+using System.Net;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using MiniLibraryAPI.Data;
@@ -17,19 +18,33 @@ public class CategoryService(ApplicationDbContext context, IMapper mapper) : ICa
         return category;
     }
 
-    public async Task<IEnumerable<Category>> GetCategoriesAsync(CategoryFilter filter)
+    public async Task<Response<ResponseGetList<IEnumerable<Category>>>> GetCategoriesAsync(CategoryFilter f)
     {
         var query = context.Categories
             .Include(x => x.Books!)
             .ThenInclude(x => x.Author)
             .AsQueryable();
 
-        if (filter.Id.HasValue) query = query.Where(x => x.Id == filter.Id.Value);
-        if (!string.IsNullOrEmpty(filter.Name)) query = query.Where(x => x.Name.Contains(filter.Name));
-        if (!string.IsNullOrEmpty(filter.Description))
-            query = query.Where(x => x.Description != null && x.Description.Contains(filter.Description));
+        if (f.Id.HasValue) query = query.Where(x => x.Id == f.Id.Value);
+        if (!string.IsNullOrEmpty(f.Name)) query = query.Where(x => x.Name.Contains(f.Name));
+        if (!string.IsNullOrEmpty(f.Description))
+            query = query.Where(x => x.Description != null && x.Description.Contains(f.Description));
 
-        return await query.ToListAsync();
+        return new Response<ResponseGetList<IEnumerable<Category>>>
+        {
+            Code = (int)HttpStatusCode.OK,
+            Message = "Success",
+            Payload = new ResponseGetList<IEnumerable<Category>>
+            {
+                Data = await query
+                    .Skip((f.Page-1) * f.Size)
+                    .Take(f.Size)
+                    .ToListAsync(),
+                Page = f.Page,
+                Size = f.Size,
+                TotalRecords = await query.CountAsync()
+            }
+        };
     }
 
     public async Task<Category?> GetByIdWithLinqQueryAsync(long id)
