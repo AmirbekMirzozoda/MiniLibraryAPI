@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using MiniLibraryAPI.AutoMapper;
 using MiniLibraryAPI.Data;
 using MiniLibraryAPI.Services;
+using MiniLibraryAPI.Workers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,9 @@ builder.Services.AddSwaggerGen();
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(conf => conf.UseNpgsql(connection));
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+builder.Services.AddHostedService<WorkerWithTimer>();
+builder.Services.AddHostedService<SimpleWorker>();
 
 var app = builder.Build();
 
