@@ -18,7 +18,7 @@ public class CategoryService(ApplicationDbContext context, IMapper mapper) : ICa
         return category;
     }
 
-    public async Task<Response<ResponseGetList<IEnumerable<Category>>>> GetCategoriesAsync(CategoryFilter f)
+    public async Task<Response<ResponseGetList<IEnumerable<Category>>>?> GetCategoriesAsync(CategoryFilter f)
     {
         var query = context.Categories
             .Include(x => x.Books!)

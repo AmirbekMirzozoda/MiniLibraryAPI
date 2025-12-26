@@ -7,7 +7,7 @@ namespace MiniLibraryAPI.Services;
 public interface ICategoryService
 {
     Task<Category> AddCategoryAsync(AddCategoryDto categoryDto);
-    Task<Response<ResponseGetList<IEnumerable<Category>>>> GetCategoriesAsync(CategoryFilter f);
+    Task<Response<ResponseGetList<IEnumerable<Category>>>?> GetCategoriesAsync(CategoryFilter f);
     Task<Category> UpdateCategoryAsync(CategoryDto category);
     Task DeleteCategoryAsync(long id);
 }

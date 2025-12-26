@@ -23,6 +23,7 @@ builder.Services.AddControllers()
 builder.Services.AddAutoMapper(typeof(MapperProfile));
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
+builder.Services.AddMemoryCache();
 
 builder.Services.AddQuartz();
 builder.Services.AddQuartzHostedService(opt =>
@@ -50,7 +51,7 @@ var workerWithQuartz = JobBuilder.Create<WorkerWithQuartz>()
 var workerWithQuartzTrigger = TriggerBuilder.Create()
     .WithIdentity("WorkerWithQuartzTrigger")
     .WithSimpleSchedule(scheduleBuilder => scheduleBuilder
-        .WithInterval(TimeSpan.FromMilliseconds(100))
+        .WithInterval(TimeSpan.FromMinutes(100))
         .RepeatForever())
     // .WithSchedule(CronScheduleBuilder.CronSchedule("*/10 * * * *"))
     // .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(19, 05))

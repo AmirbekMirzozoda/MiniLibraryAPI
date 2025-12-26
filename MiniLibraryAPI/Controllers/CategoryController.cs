@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using MiniLibraryAPI.DTOs;
 using MiniLibraryAPI.DTOs.Filters;
 using MiniLibraryAPI.Entities;
@@ -8,7 +9,7 @@ namespace MiniLibraryAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class CategoryController(ICategoryService service) : ControllerBase
+public class CategoryController(ICategoryService service, IMemoryCache cache) : ControllerBase
 {
     [HttpPost]
     public async Task<ActionResult<Category>> AddCategoryAsync([FromBody] AddCategoryDto categoryDto)
@@ -20,7 +21,19 @@ public class CategoryController(ICategoryService service) : ControllerBase
     [HttpGet]
     public async Task<ActionResult<Response<ResponseGetList<IEnumerable<Category>>>>> GetCategoriesAsync([FromQuery] CategoryFilter filter)
     {
-        var categories = await service.GetCategoriesAsync(filter);
+        var cacheKey = "categories";
+
+        if (!cache.TryGetValue(cacheKey, out Response<ResponseGetList<IEnumerable<Category>>>? categories))
+        {
+            categories = await service.GetCategoriesAsync(filter);
+
+            cache.Set(
+                cacheKey,
+                categories,
+                TimeSpan.FromSeconds(30)
+            );
+        }
+
         return Ok(categories);
     }
     
