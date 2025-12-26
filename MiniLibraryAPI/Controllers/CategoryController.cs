@@ -30,7 +30,11 @@ public class CategoryController(ICategoryService service, IMemoryCache cache) : 
             cache.Set(
                 cacheKey,
                 categories,
-                TimeSpan.FromSeconds(30)
+                new MemoryCacheEntryOptions
+                {
+                    SlidingExpiration = TimeSpan.FromSeconds(20) // Sliding expiration
+                }
+                // TimeSpan.FromSeconds(30) // Absolute expiration
             );
         }
 
