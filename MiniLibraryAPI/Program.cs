@@ -7,8 +7,24 @@ using MiniLibraryAPI.Data;
 using MiniLibraryAPI.Services;
 using MiniLibraryAPI.Workers;
 using Quartz;
+using Serilog;
+
+//Serilog пакет
+//Serilog.AspNetCore
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .WriteTo.File(
+        "logs/app-.log",
+        rollingInterval: RollingInterval.Day
+    )
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Подключаем Serilog вместо стандартного логгера
+builder.Host.UseSerilog();
 
 builder.WebHost.UseUrls("http://localhost:5000", "https://localhost:7000");
 

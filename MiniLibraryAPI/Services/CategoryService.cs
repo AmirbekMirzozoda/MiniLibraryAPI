@@ -8,14 +8,23 @@ using MiniLibraryAPI.Entities;
 
 namespace MiniLibraryAPI.Services;
 
-public class CategoryService(ApplicationDbContext context, IMapper mapper) : ICategoryService
+public class CategoryService(ApplicationDbContext context, IMapper mapper, ILogger<CategoryService> logger) : ICategoryService
 {
     public async Task<Category> AddCategoryAsync(AddCategoryDto categoryDto)
     {
-        var category = mapper.Map<Category>(categoryDto);
-        context.Categories.Add(category);
-        await context.SaveChangesAsync();
-        return category;
+        try
+        {
+            var category = mapper.Map<Category>(categoryDto);
+            context.Categories.Add(category);
+            await context.SaveChangesAsync();
+            logger.LogInformation("Category added! Id: {CategoryId}", category.Id);
+            return category;
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Error adding category");
+            return new Category();
+        }
     }
 
     public async Task<Response<ResponseGetList<IEnumerable<Category>>>?> GetCategoriesAsync(CategoryFilter f)

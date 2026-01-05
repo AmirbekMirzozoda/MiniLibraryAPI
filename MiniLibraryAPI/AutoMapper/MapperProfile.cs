@@ -8,6 +8,6 @@ public class MapperProfile : Profile
 {
     public MapperProfile()
     {
-        //CreateMap<AddCategoryDto, Category>();
+        CreateMap<AddCategoryDto, Category>();
     }
 }
