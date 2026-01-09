@@ -95,3 +95,5 @@ using var scope = app.Services.CreateScope();
 await using var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 await dbContext.Database.GetInfrastructure().GetService<IMigrator>()!.MigrateAsync();
 app.Run();
+
+public partial class Program { }

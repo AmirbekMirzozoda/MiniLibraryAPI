@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniLibraryAPI", "MiniLibraryAPI\MiniLibraryAPI.csproj", "{86F41FEA-5DE3-4E7F-B7D2-158DDCB75AEB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{0710BDF0-88DE-40A4-AF8D-C0CD8A1E3AC6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{86F41FEA-5DE3-4E7F-B7D2-158DDCB75AEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86F41FEA-5DE3-4E7F-B7D2-158DDCB75AEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86F41FEA-5DE3-4E7F-B7D2-158DDCB75AEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0710BDF0-88DE-40A4-AF8D-C0CD8A1E3AC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0710BDF0-88DE-40A4-AF8D-C0CD8A1E3AC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0710BDF0-88DE-40A4-AF8D-C0CD8A1E3AC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0710BDF0-88DE-40A4-AF8D-C0CD8A1E3AC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
